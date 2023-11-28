@@ -8,32 +8,37 @@ class House(models.IntegerChoices):
     SULTAN=2,"Sultan"
     QUEEN=3,"Queen"
 class Student(models.Model):
-    studentid=models.IntegerField(unique=True)
-    firstname=models.CharField("first name",max_length=40)
-    lastname=models.CharField("last name",max_length=40)
-    yeargroup=models.IntegerField(validators=[MinValueValidator(7),MaxValueValidator(13)],null=True,blank=True)
-    tutorgroup=models.CharField(max_length=1)
+    studentid=models.IntegerField(verbose_name="student ID",unique=True)
+    firstname=models.CharField(verbose_name="first name",max_length=40)
+    lastname=models.CharField(verbose_name="last name",max_length=40)
+    yeargroup=models.IntegerField(verbose_name="year group",validators=[MinValueValidator(7),MaxValueValidator(13)],null=True,blank=True)
+    tutorgroup=models.CharField(verbose_name="tutor group",max_length=1)
     house=models.IntegerField(choices=House.choices)
     gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female")])
+    def __str__(self):
+        return self.firstname+" "+self.lastname
 class Event(models.Model):
     name=models.CharField(max_length=40)
-    year=models.IntegerField()
+    year=models.IntegerField(verbose_name="year held")
     type=models.CharField(max_length=10)#track, field or team
-    yeargroup=models.IntegerField(validators=[MinValueValidator(7),MaxValueValidator(13)],null=True,blank=True)
+    yeargroup=models.IntegerField(verbose_name="year group",validators=[MinValueValidator(7),MaxValueValidator(13)])
     gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female")])
     record=models.ForeignKey("Signup",on_delete=models.RESTRICT,blank=True,null=True)
+    def __str__(self):
+        gen="Boys" if self.gender=="M" else "Girls"
+        return f"Year {self.yeargroup} {gen} {self.name} ({self.year})"
 class Signup(models.Model):
-    signed_student=models.ForeignKey(Student,models.RESTRICT,verbose_name="student")
+    signed_student=models.ForeignKey(Student,models.CASCADE,verbose_name="student")
     signed_event=models.ForeignKey(Event,models.CASCADE,verbose_name="event")
     ranking=models.IntegerField(null=True,blank=True)
-    result1=models.FloatField(null=True,blank=True)
-    result1_fail_type=models.CharField(max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
+    result1=models.FloatField(verbose_name="result 1",null=True,blank=True,help_text="Use this for track events")
+    result1_fail_type=models.CharField(verbose_name="result 1 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
     
-    result2=models.FloatField(null=True,blank=True)
-    result2_fail_type=models.CharField(max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
+    result2=models.FloatField(verbose_name="result 2 ",null=True,blank=True)
+    result2_fail_type=models.CharField(verbose_name="result 2 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
     
-    result3=models.FloatField(null=True,blank=True)
-    result3_fail_type=models.CharField(max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
+    result3=models.FloatField(verbose_name="result 3",null=True,blank=True)
+    result3_fail_type=models.CharField(verbose_name="result 3 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
     def printResult(self,resultnum=1):
         if resultnum==1:
             if not self.result1:
