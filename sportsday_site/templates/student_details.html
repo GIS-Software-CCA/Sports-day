@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <title>Student: {{student}}</title>
+    </head>
+    <body>
+        <h1>{{student}}</h1>
+        <h2 style="background-color:{{student.house.colour}}">House: {{student.house.name}}</h2>
+        <h2>Category: {{student.category}}</h2>
+        <h2>Registered events:</h2>
+        <ul>
+            {%for signup in student.signups.all%}
+            <li>
+                <a href="{%url "event_details" signup.signed_event.pk%}">{{signup.signed_event}}</a>
+            </li>
+            {%endfor%}
+
+        </ul>
+    </body>
+</html>

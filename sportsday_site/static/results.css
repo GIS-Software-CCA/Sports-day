@@ -1,0 +1,17 @@
+table td:nth-child(1){
+    width:100px
+}
+table td:nth-child(4){
+    width:30px;
+    text-align:center
+}
+table td{
+    border:2px solid #2468ac
+}
+table{
+    border-collapse:collapse
+}
+
+body{
+    /*font-family:"Trebuchet MS"*/
+}

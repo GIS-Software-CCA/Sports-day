@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{event}}</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="/static/results.css"></link>
+    </head>
+    <body>
+        <h3>{{event}}</h3>
+        <table>
+            <tr>
+                <td>House</td>
+                <td>Student</td>
+                <td>Result</td>
+                <td>Ranking</td>
+            </tr>
+            {%for signup in event.signups.all%}
+            <tr>
+                <td style="background-color:{{signup.signed_student.house.colour}}">
+                    {{signup.signed_student.house}}
+                </td>
+                <td><a href="{%url "student_details" signup.signed_student.pk%}">{{signup.signed_student}}</a>
+                </td>
+                <td>{{signup.signed_student.result1}}
+                </td>
+                <td>{{signup.signed_student.ranking}}-
+                </td>
+            </tr>
+            {%endfor%}
+        </table>
+    </body>
+</html>
