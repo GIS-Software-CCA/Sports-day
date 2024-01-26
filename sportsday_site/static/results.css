@@ -1,12 +1,23 @@
+table tr:first-child{
+    background:#def
+}
 table td:nth-child(1){
     width:100px
 }
 table td:nth-child(4){
-    width:30px;
+    width:auto;
+}
+.result-input{
+    width:50px;
+    text-align:center
+}
+.ranking-input{
+    width:50px;
     text-align:center
 }
 table td{
-    border:2px solid #2468ac
+    border:2px solid #2468ac;
+    padding:5px
 }
 table{
     border-collapse:collapse

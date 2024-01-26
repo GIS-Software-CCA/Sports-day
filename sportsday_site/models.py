@@ -54,35 +54,30 @@ class Signup(models.Model):
 
     result3=models.FloatField(verbose_name="result 3",null=True,blank=True)
     result3_fail_type=models.CharField(verbose_name="result 3 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
-    def printResult(self,resultnum=1):
-        if resultnum==1:
-            if not self.result1:
-                if not self.result1_fail_type:
-                    return 'No result recorded'
-                else:
-                    return self.result1_fail_type
-
+    def printResult1(self):
+        if not self.result1:
+            if not self.result1_fail_type:
+                return '--'
             else:
-                return result1
-        elif resultnum==2:
-            if not self.result2:
-                if not self.result2_fail_type:
-                    return 'No result recorded'
-                else:
-                    return self.result2_fail_type
-
+                return self.result1_fail_type
+        else:
+            return self.result1
+    def printResult2(self):
+        if not self.result2:
+            if not self.result2_fail_type:
+                return '--'
             else:
-                return result2
-        elif resultnum==3:
-            if not self.result3:
-                if not self.result3_fail_type:
-                    return 'No result recorded'
-                else:
-                    return self.result3_fail_type
-
+                return self.result2_fail_type
+        else:
+            return self.result2
+    def printResult3(self):
+        if not self.result3:
+            if not self.result3_fail_type:
+                return '--'
             else:
-                return result3
-        return "Invalid result number"
+                return self.result3_fail_type
+        else:
+            return self.result3
 
     class Meta:
         unique_together=("signed_student","signed_event")

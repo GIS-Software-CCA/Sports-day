@@ -15,6 +15,14 @@ def event_details(request,event_pk):
 def student_details(request, student_pk=1):
     student = Student.objects.get(pk=student_pk)
     return render(request, "student_details.html", {'student': student})
+
+
+
+
+
+def signup(request):
+    student = Student.objects.get(pk=student_pk)
+    return render(request, "student_details.html", {'student': student})
 """
 def index(request):
     return render(request, "main.html", {})

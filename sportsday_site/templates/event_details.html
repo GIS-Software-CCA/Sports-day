@@ -21,9 +21,11 @@
                 </td>
                 <td><a href="{%url "student_details" signup.signed_student.pk%}">{{signup.signed_student}}</a>
                 </td>
-                <td>{{signup.signed_student.result1}}
+                <!--validate inputs-->
+                <td><input class="result-input" value="{{signup.printResult1}}"></input>
                 </td>
-                <td>{{signup.signed_student.ranking}}-
+                <!--validate inputs-->
+                <td><input class="ranking-input" type="number" value="{{signup.ranking}}" disabled></input>
                 </td>
             </tr>
             {%endfor%}
