@@ -3,15 +3,21 @@
     <head>
         <title>{{event}}</title>
         <meta name="viewport" content="width=device-width">
+        {%include "font.html"%}
         <link rel="stylesheet" href="/static/results.css"></link>
     </head>
     <body>
-        <h3>{{event}}</h3>
+
+        <h3 style="text-align:center">{{event}}</h3>
         <table>
             <tr>
                 <td>House</td>
                 <td>Student</td>
-                <td>Result</td>
+                {%if event.type == "track"%}
+                    <td>Results</td>
+                {%else%}
+                    <td colspan="3">Results</td>
+                {%endif%}
                 <td>Ranking</td>
             </tr>
             {%for signup in event.signups.all%}
@@ -22,10 +28,19 @@
                 <td><a href="{%url "student_details" signup.signed_student.pk%}">{{signup.signed_student}}</a>
                 </td>
                 <!--validate inputs-->
-                <td><input class="result-input" value="{{signup.printResult1}}"></input>
-                </td>
+                {%if event.type == "track"%}
+                    <td class="result-cell"><input value="{{signup.printResult1}}"></input>
+                    </td>
+                {%else%}
+                    <td class="result-cell"><input value="{{signup.printResult1}}"></input>
+                    </td>
+                    <td class="result-cell"><input value="{{signup.printResult2}}"></input>
+                    </td>
+                    <td class="result-cell"><input value="{{signup.printResult3}}"></input>
+                    </td>
+                {%endif%}
                 <!--validate inputs-->
-                <td><input class="ranking-input" type="number" value="{{signup.ranking}}" disabled></input>
+                <td class="ranking-cell"><input type="number" value="{{signup.ranking}}" disabled></input>
                 </td>
             </tr>
             {%endfor%}

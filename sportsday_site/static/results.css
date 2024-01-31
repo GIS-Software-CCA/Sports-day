@@ -1,28 +1,40 @@
-table tr:first-child{
-    background:#def
+body{
+    font-family:"Lexend"
 }
+
+table{
+    border-collapse:collapse;
+    margin:0 auto;
+    width:80vw;
+}
+
+table td{
+    border:2px solid #738498;
+    padding:5px
+}
+
+table tr:first-child{
+    background:#cddced
+}
+
 table td:nth-child(1){
     width:100px
 }
-table td:nth-child(4){
-    width:auto;
-}
-.result-input{
+
+
+table td.result-cell{
     width:50px;
-    text-align:center
 }
-.ranking-input{
+table td.ranking-cell{
     width:50px;
-    text-align:center
-}
-table td{
-    border:2px solid #2468ac;
-    padding:5px
-}
-table{
-    border-collapse:collapse
 }
 
-body{
-    /*font-family:"Trebuchet MS"*/
+.result-cell input{
+    width:50px;
+    text-align:center
+}
+
+.ranking-cell input{
+    width:50px;
+    text-align:center
 }

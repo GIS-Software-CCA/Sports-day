@@ -1,0 +1,59 @@
+body{
+    font-family:"Lexend";
+    margin:0;
+}
+
+#title{
+    text-align:center;
+    height:10vh;
+    margin:0;
+}
+#title h2{
+    margin:0;
+}
+
+#event-selector{
+    display:flex;
+    flex-direction:column;
+    height:90vh;
+    justify-content:space-around;
+    margin:0;
+}
+
+#event-selector div{
+    color:#236;
+}
+
+.event-selector-row{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-evenly;
+}
+.event-category{
+    background:#def;
+}
+.event-category:hover{
+    background:#cde;
+}
+.event-category:active{
+    background:#9ab;
+}
+
+.event-category{
+    width:100px;
+    height:100px;
+    border-radius:20%;
+    border:5px solid #345;
+    padding:0px;
+    text-align:center;
+
+    /*vertically center text*/
+    display:flex;
+    flex-direction:column;
+    justify-content:space-evenly;
+}
+
+/* disable underline on links */
+.event-selector-row a{
+    text-decoration:none;
+}

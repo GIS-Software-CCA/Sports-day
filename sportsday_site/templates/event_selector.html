@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Select Event</title>
+        <meta name="viewport" content="width=device-width">
+        {%include "font.html"%}
+        <link rel="stylesheet" href="/static/event_selector.css"></link>
+    </head>
+    <body>
+        <div id="title">
+            <h2>Events</h2>
+        </div>
+        <div id="event-selector">
+            {%for row in rows%}
+            <div class="event-selector-row">
+                {%for option in row%}
+                <a href="{%url "event_details" option.url%}"><div class="event-category">
+                    {{option.name}}
+                </div></a>
+                {%endfor%}
+            </div>
+            {%endfor%}
+        </div>
+    </body>
+</html>

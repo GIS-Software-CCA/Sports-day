@@ -54,26 +54,26 @@ class Signup(models.Model):
 
     result3=models.FloatField(verbose_name="result 3",null=True,blank=True)
     result3_fail_type=models.CharField(verbose_name="result 3 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
-    def printResult1(self):
+    def printResult1(self,default=""):
         if not self.result1:
             if not self.result1_fail_type:
-                return '--'
+                return default
             else:
                 return self.result1_fail_type
         else:
             return self.result1
-    def printResult2(self):
+    def printResult2(self,default=""):
         if not self.result2:
             if not self.result2_fail_type:
-                return '--'
+                return default
             else:
                 return self.result2_fail_type
         else:
             return self.result2
-    def printResult3(self):
+    def printResult3(self,default=""):
         if not self.result3:
             if not self.result3_fail_type:
-                return '--'
+                return default
             else:
                 return self.result3_fail_type
         else:
