@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <title>Select Event</title>
         <meta name="viewport" content="width=device-width">
         {%include "font.html"%}
@@ -10,16 +11,18 @@
         <div id="title">
             <h2>Events</h2>
         </div>
-        <div id="event-selector">
-            {%for row in rows%}
-            <div class="event-selector-row">
-                {%for option in row%}
-                <a href="{%url "event_details" option.url%}"><div class="event-category">
-                    {{option.name}}
-                </div></a>
-                {%endfor%}
+        <div class="card-columns">
+
+        {% for event in events %}
+        <div class="card " style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
             </div>
-            {%endfor%}
+        {%endfor}
+            
         </div>
     </body>
 </html>
