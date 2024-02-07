@@ -18,12 +18,13 @@ def student_details(request, student_pk=1):
 
 def event_selector(request):
     gridl=[]
-    events=[{"name":str(i),"url":i.pk} for i in Event.objects.all()]
-    for i in events:
-        if len(gridl)==0 or len(gridl[-1])==4:
-            gridl.append([])
-        gridl[-1].append(i)
-    return render(request, "event_selector.html", {'events': Event.objects.all()})
+    options=[{"name":str(i),"url":i.pk} for i in Category.objects.all()]
+    return render(request, "event_selector.html", {'options': options,'nextselect':"event_selector_category"})
+
+def event_selector_category(request,category):
+    gridl=[]
+    options=[{"name":str(i),"url":i.pk} for i in Event.objects.filter(category=category)]
+    return render(request, "event_selector.html", {'options': options,'nextselect':"event_details"})
 
 
 

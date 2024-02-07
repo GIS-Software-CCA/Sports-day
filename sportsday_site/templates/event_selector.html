@@ -11,18 +11,17 @@
         <div id="title">
             <h2>Events</h2>
         </div>
-        <div class="card-columns row-cols-2">
+        <div class="row row-cols-3">
 
-        {% for event in events %}
+        {% for option in options %}
         <div class="card " style="width: 18rem;">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
+                <h5 class="card-title">{{option.name}}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="{%url nextselect option.url%}" class="btn btn-primary">Go somewhere</a>
               </div>
             </div>
         {%endfor%}
-
         </div>
     </body>
 </html>

@@ -7,7 +7,7 @@ class House(models.Model):
     colour=models.CharField(max_length=7,help_text="Hex code of the house's colour")#the hex code of the colour
     def __str__(self):
         return self.name
-class Category(models.Model):
+class Category(models.Model): #year group
     name=models.CharField(max_length=30)
     def __str__(self):
         return self.name
@@ -28,8 +28,11 @@ class Event(models.Model):
     year=models.IntegerField(verbose_name="year held")
     type=models.CharField(max_length=10)#track, field or team
     category=models.ForeignKey(Category,on_delete=models.RESTRICT)
-    gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female")])
-    record=models.ForeignKey("Signup",on_delete=models.RESTRICT,blank=True,null=True)
+    gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female"),("X","Mixed")])
+
+    # If a school record was created using this platform, this will link to when that occured
+    record_signup=models.ForeignKey("Signup",on_delete=models.RESTRICT,blank=True,null=True)
+    record_value=models.FloatField(blank=True,null=True)
 
     #session, group, order
     session_num=models.IntegerField()
@@ -39,6 +42,9 @@ class Event(models.Model):
     def __str__(self):
         gen="Boys" if self.gender=="M" else "Girls"
         return f"{self.category} {gen} {self.name} ({self.year})"
+
+    def record(self):
+        return self.record_signup
 
     class Meta:
         unique_together=("year","session_num","event_group","group_order")
@@ -55,7 +61,7 @@ class Signup(models.Model):
     result3=models.FloatField(verbose_name="result 3",null=True,blank=True)
     result3_fail_type=models.CharField(verbose_name="result 3 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
     def printResult1(self,default=""):
-        if not self.result1:
+        if self.result1==None:
             if not self.result1_fail_type:
                 return default
             else:
@@ -63,7 +69,7 @@ class Signup(models.Model):
         else:
             return self.result1
     def printResult2(self,default=""):
-        if not self.result2:
+        if self.result2==None:
             if not self.result2_fail_type:
                 return default
             else:
@@ -71,7 +77,7 @@ class Signup(models.Model):
         else:
             return self.result2
     def printResult3(self,default=""):
-        if not self.result3:
+        if self.result3==None:
             if not self.result3_fail_type:
                 return default
             else:
