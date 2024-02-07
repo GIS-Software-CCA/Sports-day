@@ -7,7 +7,7 @@ class House(models.Model):
     colour=models.CharField(max_length=7,help_text="Hex code of the house's colour")#the hex code of the colour
     def __str__(self):
         return self.name
-class Category(models.Model):
+class Category(models.Model): #year group
     name=models.CharField(max_length=30)
     def __str__(self):
         return self.name
@@ -28,8 +28,11 @@ class Event(models.Model):
     year=models.IntegerField(verbose_name="year held")
     type=models.CharField(max_length=10)#track, field or team
     category=models.ForeignKey(Category,on_delete=models.RESTRICT)
-    gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female")])
-    record=models.ForeignKey("Signup",on_delete=models.RESTRICT,blank=True,null=True)
+    gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female"),("X","Mixed")])
+
+    # If a school record was created using this platform, this will link to when that occured
+    record_signup=models.ForeignKey("Signup",on_delete=models.RESTRICT,blank=True,null=True)
+    record_value=models.FloatField(...)
 
     #session, group, order
     session_num=models.IntegerField()
@@ -39,6 +42,16 @@ class Event(models.Model):
     def __str__(self):
         gen="Boys" if self.gender=="M" else "Girls"
         return f"{self.category} {gen} {self.name} ({self.year})"
+
+   def record(self):
+       if self.record_value:
+           return self.record_value
+        if self.record_signup:
+            signup = self.record_signup
+            
+            pass
+        else:
+            return False
 
     class Meta:
         unique_together=("year","session_num","event_group","group_order")
