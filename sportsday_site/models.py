@@ -32,7 +32,7 @@ class Event(models.Model):
 
     # If a school record was created using this platform, this will link to when that occured
     record_signup=models.ForeignKey("Signup",on_delete=models.RESTRICT,blank=True,null=True)
-    record_value=models.FloatField(...)
+    record_value=models.FloatField(blank=True,null=True)
 
     #session, group, order
     session_num=models.IntegerField()
@@ -43,15 +43,8 @@ class Event(models.Model):
         gen="Boys" if self.gender=="M" else "Girls"
         return f"{self.category} {gen} {self.name} ({self.year})"
 
-   def record(self):
-       if self.record_value:
-           return self.record_value
-        if self.record_signup:
-            signup = self.record_signup
-            
-            pass
-        else:
-            return False
+    def record(self):
+        return self.record_signup
 
     class Meta:
         unique_together=("year","session_num","event_group","group_order")
@@ -68,7 +61,7 @@ class Signup(models.Model):
     result3=models.FloatField(verbose_name="result 3",null=True,blank=True)
     result3_fail_type=models.CharField(verbose_name="result 3 fail reason",max_length=20, blank=True, null=True, help_text='Enter the reason why this result is invalid')
     def printResult1(self,default=""):
-        if not self.result1:
+        if self.result1==None:
             if not self.result1_fail_type:
                 return default
             else:
@@ -76,7 +69,7 @@ class Signup(models.Model):
         else:
             return self.result1
     def printResult2(self,default=""):
-        if not self.result2:
+        if self.result2==None:
             if not self.result2_fail_type:
                 return default
             else:
@@ -84,7 +77,7 @@ class Signup(models.Model):
         else:
             return self.result2
     def printResult3(self,default=""):
-        if not self.result3:
+        if self.result3==None:
             if not self.result3_fail_type:
                 return default
             else:

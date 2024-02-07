@@ -14,21 +14,23 @@ body{
 
 #event-selector{
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
     height:90vh;
     justify-content:space-around;
     margin:0;
+    flex-wrap:wrap;
 }
 
 #event-selector div{
     color:#236;
 }
 
-.event-selector-row{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-evenly;
+/* disable underline on links */
+#event-selector a{
+    text-decoration: none;
+    margin:25px;
 }
+
 .event-category{
     background:#def;
 }
@@ -40,20 +42,15 @@ body{
 }
 
 .event-category{
-    width:100px;
-    height:100px;
+    width:140px;
+    height:140px;
     border-radius:20%;
     border:5px solid #345;
     padding:0px;
     text-align:center;
 
-    /*vertically center text*/
+    /* vertically center text */
     display:flex;
     flex-direction:column;
     justify-content:space-evenly;
-}
-
-/* disable underline on links */
-.event-selector-row a{
-    text-decoration:none;
 }
