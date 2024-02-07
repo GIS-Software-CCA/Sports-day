@@ -23,7 +23,7 @@ def event_selector(request):
         if len(gridl)==0 or len(gridl[-1])==4:
             gridl.append([])
         gridl[-1].append(i)
-    return render(request, "event_selector.html", {'rows': gridl})
+    return render(request, "event_selector.html", {'events': Event.objects.all()})
 
 
 
