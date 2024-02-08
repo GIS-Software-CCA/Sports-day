@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponseRedirect
 from django.http import HttpResponse
 from .models import Student,House,Signup,Event,Category
 
@@ -45,7 +45,7 @@ def event_details(request,event_pk):
                 "result2","result2_fail_type",
                 "result3","result3_fail_type"
             ])
-
+        return HttpResponseRedirect(request.path_info)
     return render(request, "event_details.html", {"event":event})
 
 def student_details(request, student_pk=1):

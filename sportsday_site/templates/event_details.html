@@ -16,7 +16,7 @@
                     <td>House</td>
                     <td>Student</td>
                     {%if event.type == "track"%}
-                        <td>Results</td>
+                        <td>Result</td>
                     {%else%}
                         <td colspan="3">Results</td>
                     {%endif%}
@@ -40,7 +40,7 @@
                         <td class="result-cell"><input value="{{signup.printResult3}}" name="result3_{{signup.pk}}"></input>
                         </td>
                     {%endif%}
-                    <td class="ranking-cell"><input type="number" value="{{signup.ranking|default_if_none:""}}" disabled></input>
+                    <td class="ranking-cell"><input type="number" value="{{signup.ranking|default_if_none:""}}" name="ranking_{{signup.pk}}" disabled></input>
                     </td>
                 </tr>
                 {%endfor%}
@@ -48,4 +48,57 @@
             <input type="submit" value="Save">
         </form>
     </body>
+    <script>
+    let signids=[{%for i in event.signups.all%}{{i.pk}},{%endfor%}]
+    let scores=[]
+    function isvalidnum(i){
+        return i&&/^\s*\d*(\.\d*)?\s*$/.test(i)
+    }
+    function score(i){
+        return isvalidnum(i)?-i:null
+    }
+    function updinpcol(rpk,resnum){
+        let elem=document.getElementsByName("result"+resnum+"_"+rpk)[0]
+        let val=elem.value
+        if(score(val)==null&&val!=""){
+            elem.style.backgroundColor="#ffa0a0"
+        }else{
+            elem.style.backgroundColor=""
+        }
+    }
+    function updateRanking(){
+        let sscores=[...scores];
+        sscores.sort((a,b)=>-(a.score-b.score))
+        var currank=0
+        var cnotnull=0
+        var curinp=undefined
+        for(var i=0;i<sscores.length;i++){
+            if(sscores[i].score==null){
+                document.getElementsByName("ranking_"+sscores[i].signid)[0].value=""
+                continue;
+            }
+            if(sscores[i].score!=curinp){
+                currank=cnotnull+1
+                curinp=sscores[i].score
+            }
+            document.getElementsByName("ranking_"+sscores[i].signid)[0].value=currank
+            cnotnull++
+        }
+    }
+    for(var i=0;i<signids.length;i++){
+        scores.push({signid:signids[i],result:document.getElementsByName("result1_"+signids[i])[0].value})
+        scores[i].score=score(scores[i].result)
+    }
+    for(let i=0;i<signids.length;i++){
+        updinpcol(signids[i],1)
+        let elem=document.getElementsByName("result"+1+"_"+signids[i])[0]
+        elem.addEventListener("change",function(){
+            updinpcol(signids[i],1)
+            scores[i].result=elem.value
+            scores[i].score=score(scores[i].result)
+            updateRanking()
+        })
+    }
+    updateRanking()
+    </script>
 </html>
