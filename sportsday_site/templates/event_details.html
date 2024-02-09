@@ -53,6 +53,7 @@
     let signids=[{%for i in signups%}{{i.pk}},{%endfor%}]
     let scores=[]
     let autoRanking=false
+    let eventType="{{event.type|escapejs}}"
     function isvalidnum(i){
         return /^\d+$/.test(i.replace(/\./,""))
     }
@@ -92,14 +93,17 @@
         scores[i].score=score(scores[i].result)
     }
     for(let i=0;i<signids.length;i++){
-        updinpcol(signids[i],1)
-        let elem=document.getElementsByName("result"+1+"_"+signids[i])[0]
-        elem.addEventListener("change",function(){
-            updinpcol(signids[i],1)
-            scores[i].result=elem.value
-            scores[i].score=score(scores[i].result)
-            if(autoRanking)updateRanking()
-        })
+        for(let j=1;j<=3;j++){
+            let elem=document.getElementsByName("result"+j+"_"+signids[i])[0]
+            if(!elem)continue;
+            updinpcol(signids[i],j)
+            elem.addEventListener("change",function(){
+                updinpcol(signids[i],j)
+                scores[i].result=elem.value
+                scores[i].score=score(scores[i].result)
+                if(autoRanking)updateRanking()
+            })
+        }
     }
     document.getElementById("auto-ranking").addEventListener("input",function(ev){
         autoRanking=ev.target.checked
