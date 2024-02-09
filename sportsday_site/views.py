@@ -11,8 +11,8 @@ def list_events(request,**kwargs):
 
 def event_details(request,event_pk):
     event=Event.objects.get(pk=event_pk)
+    signups=Signup.objects.filter(signed_event=event_pk)
     if request.method=="POST":
-        signups=Signup.objects.filter(signed_event=event_pk)
         for signup in signups:
             # is each result set for this signup?
             if "result1_"+str(signup.pk) in request.POST:
@@ -39,14 +39,21 @@ def event_details(request,event_pk):
                 else:
                     signup.result3=None
                     signup.result3_fail_type=result
+            if "ranking_"+str(signup.pk) in request.POST:
+                ranking=request.POST["ranking_"+str(signup.pk)]
+                if ranking.isnumeric():
+                    signup.ranking=int(ranking)
+                else:
+                    signup.ranking=None
             # Save each signup
             signup.save(update_fields=[
                 "result1","result1_fail_type",
                 "result2","result2_fail_type",
-                "result3","result3_fail_type"
+                "result3","result3_fail_type",
+                "ranking"
             ])
         return HttpResponseRedirect(request.path_info)
-    return render(request, "event_details.html", {"event":event})
+    return render(request, "event_details.html", {"event":event,"signups":signups.all()})
 
 def student_details(request, student_pk=1):
     student = Student.objects.get(pk=student_pk)

@@ -22,7 +22,7 @@
                     {%endif%}
                     <td>Ranking</td>
                 </tr>
-                {%for signup in event.signups.all%}
+                {%for signup in signups%}
                 <tr>
                     <td style="background-color:{{signup.signed_student.house.colour}}">
                         {{signup.signed_student.house}}
@@ -40,19 +40,21 @@
                         <td class="result-cell"><input value="{{signup.printResult3}}" name="result3_{{signup.pk}}"></input>
                         </td>
                     {%endif%}
-                    <td class="ranking-cell"><input type="number" value="{{signup.ranking|default_if_none:""}}" name="ranking_{{signup.pk}}" disabled></input>
+                    <td class="ranking-cell"><input type="number" value="{{signup.ranking|default_if_none:""}}" name="ranking_{{signup.pk}}" min="1" max="{{signups|length}}" step="1"></input>
                     </td>
                 </tr>
                 {%endfor%}
             </table>
+            <label>Automatic ranking <input type="checkbox" id="auto-ranking"></label>
             <input type="submit" value="Save">
         </form>
     </body>
     <script>
-    let signids=[{%for i in event.signups.all%}{{i.pk}},{%endfor%}]
+    let signids=[{%for i in signups%}{{i.pk}},{%endfor%}]
     let scores=[]
+    let autoRanking=false
     function isvalidnum(i){
-        return i&&/^\s*\d*(\.\d*)?\s*$/.test(i)
+        return /^\d+$/.test(i.replace(/\./,""))
     }
     function score(i){
         return isvalidnum(i)?-i:null
@@ -96,9 +98,15 @@
             updinpcol(signids[i],1)
             scores[i].result=elem.value
             scores[i].score=score(scores[i].result)
-            updateRanking()
+            if(autoRanking)updateRanking()
         })
     }
-    updateRanking()
+    document.getElementById("auto-ranking").addEventListener("input",function(ev){
+        autoRanking=ev.target.checked
+        if(autoRanking)updateRanking()
+        for(var i of signids){
+            document.getElementsByName("ranking_"+i)[0].disabled=autoRanking
+        }
+    })
     </script>
 </html>
