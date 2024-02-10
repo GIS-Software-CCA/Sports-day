@@ -22,7 +22,7 @@ class Student(models.Model):
     house=models.ForeignKey(House,on_delete=models.RESTRICT)
     gender=models.CharField(max_length=1,choices=[("M","Male"),("F","Female")])
     def __str__(self):
-        return self.firstname+" "+self.lastname
+        return f"{self.firstname} {self.lastname} ({self.tutorgroup})"
 class Event(models.Model):
     name=models.CharField(max_length=40)
     year=models.IntegerField(verbose_name="year held")
