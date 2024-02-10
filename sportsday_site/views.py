@@ -55,6 +55,12 @@ def event_details(request,event_pk):
         return HttpResponseRedirect(request.path_info)
     return render(request, "event_details.html", {"event":event,"signups":signups.all()})
 
+def event_details_printable(request,event_pk):
+    event=Event.objects.get(pk=event_pk)
+    signups=Signup.objects.filter(signed_event=event_pk)
+    return render(request, "event_printable.html", {"event":event,"signups":signups.all()})
+
+
 def student_details(request, student_pk=1):
     student = Student.objects.get(pk=student_pk)
     return render(request, "student_details.html", {'student': student})

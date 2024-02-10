@@ -48,6 +48,7 @@
             <label>Automatic ranking <input type="checkbox" id="auto-ranking"></label>
             <input type="submit" value="Save">
         </form>
+        <a href="{%url "event_details_printable" event.pk%}">Printable version</a>
     </body>
     <script>
     let signids=[{%for i in signups%}{{i.pk}},{%endfor%}]
