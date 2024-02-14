@@ -40,7 +40,7 @@ class Event(models.Model):
     group_order=models.IntegerField()
 
     def __str__(self):
-        gen="Boys" if self.gender=="M" else "Girls"
+        gen="Boys" if self.gender=="M" else "Girls" if self.gender=="F" else "Mixed"
         return f"{self.category} {gen} {self.name} ({self.year})"
 
     def record(self):
