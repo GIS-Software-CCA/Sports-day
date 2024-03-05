@@ -28,9 +28,9 @@ def event_selector_category(request,category):
 
 
 
-def signup(request):
-    student = Student.objects.get(pk=student_pk)
-    return render(request, "student_details.html", {'student': student})
+def student_signups(request,category,gender):
+    category_object=Category.objects.get(pk=category)
+    return render(request, "student_signups.html", {"category":category_object,"gender":gender})
 """
 def index(request):
     return render(request, "main.html", {})
