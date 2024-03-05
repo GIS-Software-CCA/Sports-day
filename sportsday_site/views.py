@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from .models import Student,House,Event,Category
+import json
 
 
 # Create your views here
@@ -26,11 +28,20 @@ def event_selector_category(request,category):
     options=[{"name":str(i),"url":i.pk} for i in Event.objects.filter(category=category)]
     return render(request, "event_selector.html", {'options': options,'nextselect':"event_details"})
 
+def allstudents(request):
+    obj=[]
+    for i in Student.objects.all():
+        obj.append(i)
+    return HttpResponse(json.dumps(obj))
 
-
-def student_signups(request,category,gender):
+def student_signups(request,houseid,category,gender):
     category_object=Category.objects.get(pk=category)
-    return render(request, "student_signups.html", {"category":category_object,"gender":gender})
+    house_object=House.objects.get(pk=houseid)
+    valid_events=Event.objects.filter(gender=gender,category=category)
+
+    valid_students=Student.objects.filter(gender=gender,category=category)
+    gender_string="Boys" if gender=="M" else "Girls" if gender=="F" else "Mixed"
+    return render(request, "student_signups.html", {"house":house_object,"category":category_object,"gender":gender_string,"events":valid_events,"students":valid_students})
 """
 def index(request):
     return render(request, "main.html", {})

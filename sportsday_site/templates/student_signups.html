@@ -8,10 +8,32 @@
     </head>
     <body>
         <h1>
-            {{category}}{{gender}} signups
+            {{house}} {{category}} {{gender}} signups
         </h1>
+        <form action="" method="POST">
+            {%csrf_token%}
         <table>
+            <tr><td>Event</td><td>Slot 1</td><td>Slot 2</td></tr>
+            {%for i in events%}
+            <tr><td>{{i}}</td>
+                {%for i in "hi"%}
+                <td>
+                <select name="event_{{i.pk}}_slot_{{forloop.counter}}">
+                    {%for i in students%}
+                    <option value="{{i.pk}}">{{i}}</option>
+
+                    {%endfor%}
+
+                </select>
+            </td>{%endfor%}
+</tr>
+            {%endfor%}
 
         </table>
+        <input type="submit" value="Save"></input>
+    </form>
     </body>
+    <script>
+    document.getElementById("name").addEventListener("input")
+    </script>
 </html>
