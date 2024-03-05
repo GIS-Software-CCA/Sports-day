@@ -9,41 +9,109 @@
     <body>
 
         <h3 style="text-align:center">{{event}}</h3>
-        <table>
-            <tr>
-                <td>House</td>
-                <td>Student</td>
-                {%if event.type == "track"%}
-                    <td>Results</td>
-                {%else%}
-                    <td colspan="3">Results</td>
-                {%endif%}
-                <td>Ranking</td>
-            </tr>
-            {%for signup in event.signups.all%}
-            <tr>
-                <td style="background-color:{{signup.signed_student.house.colour}}">
-                    {{signup.signed_student.house}}
-                </td>
-                <td><a href="{%url "student_details" signup.signed_student.pk%}">{{signup.signed_student}}</a>
-                </td>
-                <!--validate inputs-->
-                {%if event.type == "track"%}
-                    <td class="result-cell"><input value="{{signup.printResult1}}"></input>
+        <form method="post">
+            {%csrf_token%}
+            <table>
+                <tr>
+                    <td>House</td>
+                    <td>Student</td>
+                    {%if event.type == "track"%}
+                        <td>Result</td>
+                    {%else%}
+                        <td colspan="3">Results</td>
+                    {%endif%}
+                    <td>Ranking</td>
+                </tr>
+                {%for signup in signups%}
+                <tr>
+                    <td style="background-color:{{signup.signed_student.house.colour}}">
+                        {{signup.signed_student.house}}
                     </td>
-                {%else%}
-                    <td class="result-cell"><input value="{{signup.printResult1}}"></input>
+                    <td><a href="{%url "student_details" signup.signed_student.pk%}">{{signup.signed_student}}</a>
                     </td>
-                    <td class="result-cell"><input value="{{signup.printResult2}}"></input>
+                    {%if event.type == "track"%}
+                        <td class="result-cell"><input value="{{signup.printResult1}}" name="result1_{{signup.pk}}"></input>
+                        </td>
+                    {%else%}
+                        <td class="result-cell"><input value="{{signup.printResult1}}" name="result1_{{signup.pk}}"></input>
+                        </td>
+                        <td class="result-cell"><input value="{{signup.printResult2}}" name="result2_{{signup.pk}}"></input>
+                        </td>
+                        <td class="result-cell"><input value="{{signup.printResult3}}" name="result3_{{signup.pk}}"></input>
+                        </td>
+                    {%endif%}
+                    <td class="ranking-cell"><input type="number" value="{{signup.ranking|default_if_none:""}}" name="ranking_{{signup.pk}}" min="1" max="{{signups|length}}" step="1"></input>
                     </td>
-                    <td class="result-cell"><input value="{{signup.printResult3}}"></input>
-                    </td>
-                {%endif%}
-                <!--validate inputs-->
-                <td class="ranking-cell"><input type="number" value="{{signup.ranking}}" disabled></input>
-                </td>
-            </tr>
-            {%endfor%}
-        </table>
+                </tr>
+                {%endfor%}
+            </table>
+            <label>Automatic ranking <input type="checkbox" id="auto-ranking"></label>
+            <input type="submit" value="Save">
+        </form>
+        <a href="{%url "event_details_printable" event.pk%}">Printable version</a>
     </body>
+    <script>
+    let signids=[{%for i in signups%}{{i.pk}},{%endfor%}]
+    let scores=[]
+    let autoRanking=false
+    let eventType="{{event.type|escapejs}}"
+    function isvalidnum(i){
+        return /^\d+$/.test(i.replace(/\./,""))
+    }
+    function score(i){
+        return isvalidnum(i)?-i:null
+    }
+    function updinpcol(rpk,resnum){
+        let elem=document.getElementsByName("result"+resnum+"_"+rpk)[0]
+        let val=elem.value
+        if(score(val)==null&&val!=""){
+            elem.style.backgroundColor="#ffa0a0"
+        }else{
+            elem.style.backgroundColor=""
+        }
+    }
+    function updateRanking(){
+        let sscores=[...scores];
+        sscores.sort((a,b)=>-(a.score-b.score))
+        var currank=0
+        var cnotnull=0
+        var curinp=undefined
+        for(var i=0;i<sscores.length;i++){
+            if(sscores[i].score==null){
+                document.getElementsByName("ranking_"+sscores[i].signid)[0].value=""
+                continue;
+            }
+            if(sscores[i].score!=curinp){
+                currank=cnotnull+1
+                curinp=sscores[i].score
+            }
+            document.getElementsByName("ranking_"+sscores[i].signid)[0].value=currank
+            cnotnull++
+        }
+    }
+    for(var i=0;i<signids.length;i++){
+        scores.push({signid:signids[i],result:document.getElementsByName("result1_"+signids[i])[0].value})
+        scores[i].score=score(scores[i].result)
+    }
+    for(let i=0;i<signids.length;i++){
+        for(let j=1;j<=3;j++){
+            let elem=document.getElementsByName("result"+j+"_"+signids[i])[0]
+            if(!elem)continue;
+            updinpcol(signids[i],j)
+            elem.addEventListener("change",function(){
+                updinpcol(signids[i],j)
+                scores[i].result=elem.value
+                scores[i].score=score(scores[i].result)
+                if(autoRanking)updateRanking()
+            })
+        }
+    }
+    document.getElementById("auto-ranking").addEventListener("input",function(ev){
+        autoRanking=ev.target.checked
+        if(autoRanking)updateRanking()
+        for(var i of signids){
+            document.getElementsByName("ranking_"+i)[0].disabled=autoRanking
+        }
+    })
+    </script>
 </html>
