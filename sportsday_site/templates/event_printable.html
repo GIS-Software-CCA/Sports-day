@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{event}}</title>
+        <meta name="viewport" content="width=device-width">
+        {%include "font.html"%}
+        <link rel="stylesheet" href="/static/results_printable.css"></link>
+    </head>
+    <body>
+
+        <h3 style="text-align:center">{{event}}</h3>
+        <table>
+            <tr>
+                <td>House</td>
+                <td>Student</td>
+                {%if event.type == "track"%}
+                    <td>Result</td>
+                {%else%}
+                    <td colspan="3">Results</td>
+                {%endif%}
+                <td>Ranking</td>
+            </tr>
+            {%for signup in signups%}
+            <tr>
+                <td>
+                    {{signup.signed_student.house}}
+                </td>
+                <td><a>{{signup.signed_student}}</a>
+                </td>
+                {%if event.type == "track"%}
+                    <td class="result-cell">
+                    </td>
+                {%else%}
+                    <td class="result-cell">
+                    </td>
+                    <td class="result-cell">
+                    </td>
+                    <td class="result-cell">
+                    </td>
+                {%endif%}
+                <td class="ranking-cell">
+                </td>
+            </tr>
+            {%endfor%}
+        </table>
+    </body>
+</html>
