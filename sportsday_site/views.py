@@ -28,12 +28,6 @@ def event_selector_category(request,category):
     options=[{"name":str(i),"url":i.pk} for i in Event.objects.filter(category=category)]
     return render(request, "event_selector.html", {'options': options,'nextselect':"event_details"})
 
-def allstudents(request):
-    obj=[]
-    for i in Student.objects.all():
-        obj.append(i)
-    return HttpResponse(json.dumps(obj))
-
 def student_signups(request,houseid,category,gender):
     category_object=Category.objects.get(pk=category)
     house_object=House.objects.get(pk=houseid)
