@@ -113,10 +113,8 @@ def student_signups(request,houseid,category,gender):
                     student_obj=Student.objects.get(pk=student_pk)
                     Signup.objects.create(signed_student=student_obj,signed_event=event)
         print("form submitted")
-
         return HttpResponseRedirect(request.path_info)
     return render(request, "student_signups.html", {"house":house_object,"category":category_object,"gender":gender_string,"events":valid_events,"students":valid_students,"messages":messages.get_messages(request)})
-"""
-def index(request):
-    return render(request, "main.html", {})
-"""
+
+def mainpage(request):
+    return render(request, "mainpage.html", {})
