@@ -1,0 +1,22 @@
+body{
+    font-family:"Lexend"
+}
+h1{
+    text-align:center
+}
+.button{
+    text-decoration:none
+}
+.button div{
+    background:#cde;
+    border:5px solid #415795;
+    border-radius:10px;
+    padding:5px;
+    text-align:center
+}
+.button:hover div{
+    background:#bcd;
+}
+.button:focus div{
+    background:#9ab;
+}

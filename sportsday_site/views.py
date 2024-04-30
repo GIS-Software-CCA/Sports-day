@@ -80,7 +80,6 @@ def event_selector_category(request,category):
 def signup(request):
     student = Student.objects.get(pk=student_pk)
     return render(request, "student_details.html", {'student': student})
-"""
-def index(request):
-    return render(request, "main.html", {})
-"""
+
+def mainpage(request):
+    return render(request, "mainpage.html", {})
