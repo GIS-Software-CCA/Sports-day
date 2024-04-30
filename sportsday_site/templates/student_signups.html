@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{event}}</title>
+        <meta name="viewport" content="width=device-width">
+        {%include "font.html"%}
+        <link rel="stylesheet" href="/static/results.css"></link>
+    </head>
+    <body>
+        <h1>
+            {{house}} {{category}} {{gender}} signups
+        </h1>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <table>
+                <tr><td>Event</td><td>Slot 1</td><td>Slot 2</td></tr>
+                {%for event in events%}
+                <tr>
+                    <td>{{event}}</td>
+                    {%for slotNum in "12"%}
+                        <td>
+                        <select name="event_{{event.pk}}_slot_{{forloop.counter}}">
+                            {%for student in students%}
+                            <option value="{{student.pk}}">{{student}}</option>
+
+                            {%endfor%}
+                        </select>
+                        </td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </table>
+            <input type="submit" value="Save">
+        </form>
+    </body>
+    <script>
+    </script>
+</html>

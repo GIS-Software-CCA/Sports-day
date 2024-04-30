@@ -9,5 +9,6 @@ urlpatterns = [
     path('events/<int:category>', views.event_selector_category,name="event_selector_category"),
     path('events/all', views.list_events,name="list_events_all"),
     path('events', views.event_selector,name="event_selector"),
+    path('signups/<int:houseid>/<int:category>/<str:gender>', views.student_signups,name="student_signups"),
     path('', views.mainpage,name="mainpage"),
 ]
