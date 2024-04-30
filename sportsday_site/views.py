@@ -1,6 +1,8 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.http import HttpResponse
-from .models import Student,House,Signup,Event,Category
+from .models import Student,House,Event,Category,Signup
+from django.contrib import messages
+import json
 
 
 # Create your views here
@@ -92,9 +94,14 @@ def student_signups(request,houseid,category,gender):
                 if form_field in request.POST:
                     result=request.POST[form_field]
                     if result in student_set:
+                        messages.error(request,"Duplicate student")
                         valid_input=False
                         break
-                    student_set.add(request.POST[form_field])
+                    if not valid_students.filter(pk=result).exists():
+                        messages.error(request,"Invalid student")
+                        valid_input=False
+                        break
+                    student_set.add(result)
             if not valid_input:
                 break
             new_signups[event]=student_set
@@ -102,15 +109,13 @@ def student_signups(request,houseid,category,gender):
             for event in valid_events:
                 curev_signups=Signup.objects.filter(signed_event=event,signed_event__gender=gender,signed_student__house=houseid)
                 curev_signups.delete()#replace with new signups
-                for student_pk in student_set:
+                for student_pk in new_signups[event]:
                     student_obj=Student.objects.get(pk=student_pk)
                     Signup.objects.create(signed_student=student_obj,signed_event=event)
-        else:
-            return HttpResponse("error")
         print("form submitted")
 
         return HttpResponseRedirect(request.path_info)
-    return render(request, "student_signups.html", {"house":house_object,"category":category_object,"gender":gender_string,"events":valid_events,"students":valid_students})
+    return render(request, "student_signups.html", {"house":house_object,"category":category_object,"gender":gender_string,"events":valid_events,"students":valid_students,"messages":messages.get_messages(request)})
 """
 def index(request):
     return render(request, "main.html", {})

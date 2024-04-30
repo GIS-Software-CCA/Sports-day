@@ -12,27 +12,26 @@
         </h1>
         <form action="" method="POST">
             {%csrf_token%}
-        <table>
-            <tr><td>Event</td><td>Slot 1</td><td>Slot 2</td></tr>
-            {%for event in events%}
-            <tr>
-                <td>{{event}}</td>
-                {%for slotNum in "12"%}
-                    <td>
-                    <select name="event_{{event.pk}}_slot_{{forloop.counter}}">
-                        {%for student in students%}
-                        <option value="{{student.pk}}">{{student}}</option>
+            <table>
+                <tr><td>Event</td><td>Slot 1</td><td>Slot 2</td></tr>
+                {%for event in events%}
+                <tr>
+                    <td>{{event}}</td>
+                    {%for slotNum in "12"%}
+                        <td>
+                        <select name="event_{{event.pk}}_slot_{{forloop.counter}}">
+                            {%for student in students%}
+                            <option value="{{student.pk}}">{{student}}</option>
 
-                        {%endfor%}
-                    </select>
-                    </td>
+                            {%endfor%}
+                        </select>
+                        </td>
+                    {%endfor%}
+                </tr>
                 {%endfor%}
-            </tr>
-            {%endfor%}
-
-        </table>
-        <input type="submit" value="Save"></input>
-    </form>
+            </table>
+            <input type="submit" value="Save">
+        </form>
     </body>
     <script>
     </script>
